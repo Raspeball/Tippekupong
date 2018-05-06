@@ -11,7 +11,6 @@ def main():
 	#
 	## Global variables ##
 	kamper = 12 #alltid 12 kamper på tippekupongen
-	#possible_res = ("H","U","B") #en kamp ender alltid hjemme, borte eller uavgjort
 	pure_res = [] #for kun resultatene, for å kunne velge gardering
 	present_res = [] #liste for å presentere resultatene
 	possible_res = {0:"H",1:"U",2:"B"}
@@ -29,16 +28,14 @@ def main():
 	#
 	def gardering():
 		#gardering tar inn kupongen, og plukker ut to villkårlige kamper som skal halvgarderes
-		#dette tilsvarer en kupong på 4 rekker
+		#dette tilsvarer en kupong på 4 rekker jfr. Norsk Tipping
 		gard_res = list(possible_res.keys())
 		gard_kamper = random.sample(range(0,len(pure_res)),2)
 		for g in range(len(gard_kamper)):
 			gard_res.remove(pure_res[gard_kamper[g]][0])#pure_res liste av liste
 			gard_choice = random.choice(gard_res)
-			#pure_res[gard_kamper[g]] += gard_choice
 			pure_res[gard_kamper[g]].append(gard_choice)
 			pure_res[gard_kamper[g]].sort()#sorterer resultatene slik at de kommer "HUB"
-			#present_res[gard_kamper[g]] += gard_choice
 			gard_res = list(possible_res.keys())
 			#
 		#
