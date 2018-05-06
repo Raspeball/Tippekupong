@@ -11,40 +11,57 @@ def main():
 	#
 	## Global variables ##
 	kamper = 12 #alltid 12 kamper på tippekupongen
-	possible_res = ("H","U","B") #en kamp ender alltid hjemme, borte eller uavgjort
+	#possible_res = ("H","U","B") #en kamp ender alltid hjemme, borte eller uavgjort
 	pure_res = [] #for kun resultatene, for å kunne velge gardering
 	present_res = [] #liste for å presentere resultatene
+	possible_res = {0:"H",1:"U",2:"B"}
 	#
 	#
 	def tippekupong():
 		for k in range(kamper):
-			res = random.choice(possible_res)
-			pure_res.append(res)
-			res_tekst = "Kamp nr. " + str((k+1)) + ": " + res
-			present_res.append(res_tekst)
+			res = random.choice(list(possible_res.keys()))
+			pure_res.append([res])#liste av lister, der resultatet av en kamp er en liste
+			#resultatet av en gardert kamp er en liste med lengde > 1
 			#
 		#
 	#
-	#def rekker(): #dersom man skal legge til en funksjon som plukker garderinger basert på antall rekker på tippekupongen
 	#
 	#
 	def gardering():
 		#gardering tar inn kupongen, og plukker ut to villkårlige kamper som skal halvgarderes
 		#dette tilsvarer en kupong på 4 rekker
-		bong_res = list(possible_res)
-		gard_kamper = random.sample(range(0,len(present_res)),2)
+		gard_res = list(possible_res.keys())
+		gard_kamper = random.sample(range(0,len(pure_res)),2)
 		for g in range(len(gard_kamper)):
-			bong_res.remove(pure_res[gard_kamper[g]])
-			gard_choice = random.choice(bong_res)
-			pure_res[gard_kamper[g]] += gard_choice
-			present_res[gard_kamper[g]] += gard_choice
-			bong_res = list(possible_res)
+			gard_res.remove(pure_res[gard_kamper[g]][0])#pure_res liste av liste
+			gard_choice = random.choice(gard_res)
+			#pure_res[gard_kamper[g]] += gard_choice
+			pure_res[gard_kamper[g]].append(gard_choice)
+			pure_res[gard_kamper[g]].sort()#sorterer resultatene slik at de kommer "HUB"
+			#present_res[gard_kamper[g]] += gard_choice
+			gard_res = list(possible_res.keys())
 			#
 		#
 	#
 	#
+	#
+	def tippetekst(): #skriver resultatene i tekstform
+		for r in range(len(pure_res)):
+			res_tekst = "Kamp nr. " + str((r+1)) + ": "
+			for s in pure_res[r]:
+				res_tekst += possible_res[s]
+				#
+			present_res.append(res_tekst)
+			#
+		#
+	#
+	#
+	#
+	## Call functions ##
 	tippekupong()
 	gardering()
+	tippetekst()
+	## Print results to screen ##
 	#print(pure_res)
 	for r in present_res:
 		print(r,end="\n")
@@ -52,5 +69,6 @@ def main():
 	#
 #
 #
-#
+## Run program ##
 main()
+#
